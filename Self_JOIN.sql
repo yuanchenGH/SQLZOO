@@ -70,3 +70,15 @@ FROM
 )E
 ON (S.stop = E.stop)
 JOIN stops ON(stops.id = S.stop)
+
+-- #10 alter
+SELECT a.num,a.company,stopb.name,c.num,c.company
+    FROM  route a JOIN route b ON(a.company=b.company and a.num=b.num)
+    JOIN route c on (b.stop=c.stop and b.num <>c.num)
+    JOIN route d ON(c.company=d.company and c.num=d.num)
+    JOIN stops stopa ON (a.stop=stopa.id)
+    JOIN stops stopb ON (b.stop=stopb.id)
+    JOIN stops stopc ON (c.stop=stopc.id)
+    JOIN stops stopd ON (d.stop=stopd.id)
+    WHERE stopa.name = 'Craiglockhart' and stopd.name= 'Lochend' AND stopb.name=stopc.name
+    ORDER BY cast(a.num as char),stopb.name,cast(c.num as char)
